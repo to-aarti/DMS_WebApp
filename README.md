@@ -7,7 +7,7 @@ Document Management System
 * [Gulp](http://gulpjs.com)
 
 ### Installation
-1. Clone the repository: `git clone https://github.com/aarti-gupta/Webapp_DMS.git`
+1. Clone  the repository: `git clone https://github.com/aarti-gupta/Webapp_DMS.git`
 2. Install the NodeJS dependencies: `npm install`.
 3. Install the Bower dependencies: `bower install`.
 4. Run the gulp build task: `gulp build`.

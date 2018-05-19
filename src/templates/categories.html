@@ -1,0 +1,27 @@
+<div class="row" data-ng-controller="CategoryCtrl">
+    <div class="col-xs-12">
+        <uib-alert data-ng-repeat="alert in sharedVar.alerts" type="info" close="closeAlert($index)">{{alert.msg}}</uib-alert>
+    </div>
+
+    <div class="col-xs-12">
+        <div data-ng-if="isProcessing" style="text-align: center; margin-top: 80px;"> Loading ...</div>
+        <div data-ng-if="!isProcessing && categories.length == 0" style="text-align: center; margin-top: 80px;"> Sorry! Currently No Category is available.</div>
+        <div class="col-xs-8">
+        <div class="panel panel-info" ng-repeat="category in categories">
+            <div class="panel-heading">
+                <span style="">{{ category.name }}</span>
+                <a href="" style="float: right" data-toggle="tooltip" title="Delete" ng-click="deleteCategory($index, category.id)">
+                    <i class="fa fa-trash-o" aria-hidden="true"></i>
+                </a>
+                <a href="" style="float: right; margin-right: 10px"  data-toggle="tooltip" title="Edit" ng-click="editCategory(category)">
+                    <i class="fa fa-pencil" aria-hidden="true"></i>
+                </a>
+            </div>
+            <div class="panel-body">
+            {{ category.description }}
+        </div>
+        </div>
+        </div>
+
+    </div>
+</div>

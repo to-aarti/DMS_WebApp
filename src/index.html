@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="en" ng-app="RDash">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<title>Document Management System</title>
+  <!-- STYLES -->
+  <!-- build:css lib/css/main.min.css -->
+  <link rel="stylesheet" type="text/css" href="components/bootstrap/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" href="components/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" type="text/css" href="components/rdash-ui/dist/css/rdash.min.css">
+  <!-- endbuild -->
+  <!-- SCRIPTS -->
+  <!-- build:js lib/js/main.min.js -->
+  <script type="text/javascript" src="components/angular/angular.min.js"></script>
+  <script type="text/javascript" src="components/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
+  <script type="text/javascript" src="components/angular-cookies/angular-cookies.min.js"></script>
+  <script type="text/javascript" src="components/angular-ui-router/release/angular-ui-router.min.js"></script>
+  <script src="components/ng-file-upload/ng-file-upload.js"></script>
+
+  <!-- angular moment -->
+  <script src="components/moment/min/moment.min.js"></script>
+  <script src="components/angular-momentjs/angular-momentjs.js"></script>
+
+  <!-- endbuild -->
+
+  <!-- Custom Scripts -->
+  <script type="text/javascript" src="js/dashboard.min.js"></script>
+
+  <style>
+  .search-bar{
+    display: inline-block;
+    width: 50%;
+    text-align: right;
+    margin-top: 12px;
+    vertical-align: top;
+    margin-top: 10px;
+  }
+  .second-header{
+    float: right;
+    background-color: darkcyan;
+    height: 56px;
+    margin: 0px 0px 20px 0px;
+    width: 100%;
+  }
+  .upload-button{
+    float: left;
+    margin: 10px 0px 0px 40px;
+  }
+  .filter{
+    float: right;
+    margin-top: 14px;
+    margin-right: 17px;
+    border-radius: 5px;
+    width: 160px;
+    height: 30px;
+  }
+  .breadcrumb-title{
+  }
+  .meta-extra{
+    display: inline-block;
+    width: 49%;
+  }
+  </style>
+
+
+</head>
+<body ng-controller="MasterCtrl">
+  <div id="page-wrapper" ng-class="{'open': toggle}" ng-cloak>
+
+    <!-- Sidebar -->
+    <div id="sidebar-wrapper">
+      <ul class="sidebar">
+        <li class="sidebar-main">
+          <a ng-click="toggleSidebar()">
+            DMS
+            <span class="menu-icon glyphicon glyphicon-transfer"></span>
+          </a>
+        </li>
+        <li class="sidebar-title"><span>NAVIGATION</span></li>
+        <li class="sidebar-list">
+          <a href="#/dashboard">Dashboard <span class="menu-icon fa fa-tachometer"></span></a>
+        </li>
+        <li class="sidebar-list">
+          <a href="#/categories">Categories <span class="menu-icon glyphicon glyphicon-th-large"></span></a>
+        </li>
+        <li class="sidebar-list">
+          <a href="#/unclassified-documents">Unclassified <span class="menu-icon glyphicon glyphicon-warning-sign"></span></a>
+        </li>
+        <li class="sidebar-list">
+          <a href="#/trash">Trash <span class="menu-icon glyphicon glyphicon-trash"></span></a>
+        </li>
+      </ul>
+    </div>
+    <!-- End Sidebar -->
+
+    <div id="content-wrapper">
+      <div class="page-content">
+
+        <!-- Header Bar -->
+        <div class="row header" style="margin-bottom: 0px; padding-right:10px">
+          <div class="col-xs-12" style="margin-bottom: 0px">
+            <div class="meta meta-extra">
+                <div class="page">
+                  Document Management System
+                </div>
+                <div class="breadcrumb-title">
+                  Home / {{ sharedVar.pageTitle }}
+                </div>
+            </div>
+            <form data-ng-hide="sharedVar.hideFilters" class="search-bar form-inline my-2 my-lg-0">
+              <input class="form-control mr-sm-2" placeholder="Search" data-ng-model="filters.searchText" aria-label="Search">
+              <button class="btn btn-outline-success my-2 my-sm-0" data-ng-click="sharedVar.applySearch()">Search</button>
+            </form>
+          </div>
+        </div>
+
+        <div class="second-header" data-ng-hide="sharedVar.hideSecondHeader">
+          <div class="upload-button" data-ng-show="sharedVar.showAddButton">
+            <button type="button" class="btn btn-outline-primary" data-ng-click="sharedVar.addNew()">
+              <span class="menu-icon glyphicon glyphicon-plus"></span>
+                {{ sharedVar.addButton }}
+            </button>
+          </div>
+          <select data-ng-hide="sharedVar.hideFilters" class="filter filter-1" ng-model="filters.category" data-ng-change="sharedVar.applySearch()">
+            <option value="" selected>Select Category</option>
+            <option data-ng-repeat="cat in categories" value="{{ cat.id }}">{{ cat.name }}</option>
+          </select>
+          <select data-ng-hide="sharedVar.hideFilters" class="filter filter-2" ng-model="filters.file_type" data-ng-change="sharedVar.applySearch()">
+            <option value="" selected>Select File Type</option>
+            <option value="1">Document</option>
+            <option value="2">Image</option>
+            <option value="3">Video</option>
+          </select>
+        </div>
+
+        <!-- End Header Bar -->
+
+        <!-- Main Content -->
+        <div ui-view></div>
+
+      </div><!-- End Page Content -->
+    </div><!-- End Content Wrapper -->
+  </div><!-- End Page Wrapper -->
+</body>
+</html>

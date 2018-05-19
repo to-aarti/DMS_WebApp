@@ -1,0 +1,123 @@
+<style>
+    .no-padding{
+        padding-left: 0;
+        padding-right: 0;
+    }
+    .attachment-wrap {
+{#        text-align: center;#}
+    }
+    .custom-progress{
+        width: 100%;
+        height: 11px;
+    }
+    .file-status{
+        float: right;
+        width: 5%
+    }
+</style>
+
+<div data-ng-controller="UploadCtrl" class="row">
+    <div class="col-xs-12">
+        <uib-alert data-ng-repeat="alert in sharedVar.alerts" type="info" close="closeAlert($index)">{{alert.msg}}</uib-alert>
+    </div>
+
+    <form novalidate  class="col-xs-12" name="attachmentUpload">
+        <div class="attachment-wrap">
+
+            <div>
+                <div class="panel panel-info">
+                    <div class="panel-heading">Upload Documents</div>
+                    <div class="panel-body">
+                        <form>
+                            <div class="form-group">
+                                <label for="exampleInputEmail1">File Category</label>
+                                <select class="form-control form-control-lg"  data-ng-required="true"
+                                        data-ng-model="selectedCategoryId">
+                                    <option value="" selected>Select Category</option>
+                                    <option data-ng-repeat="cat in categories" value="{{ cat.id }}">{{ cat.name }}</option>
+                                </select>
+                                <small id="emailHelp" class="form-text text-muted">Please select the category in which you want to upload your file.
+                                    You can also do this later.</small>
+                            </div>
+                            <button name="fileSubmit" ngf-select="uploadFiles($files)"
+                                    class="btn btn-outline-danger"
+                                    ngf-multiple="true"
+                                    >
+                                Select Files to Upload
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xs-12">
+                <table class="table" style="margin-top: 25px; margin-left: -15px; margin-bottom: 0px;" data-ng-if="uploadingFiles.length > 0">
+                <thead>
+                <tr>
+                    <th>FILE</th>
+                    <th>SIZE</th>
+                    <th>STATUS</th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr data-ng-repeat="file in uploadingFiles">
+                    <td style="width: 40%">{{ file.name }}</td>
+                    <td style="width: 10%"> {{ file.size | formattedSize }} </td>
+                    <td style="width: 30%">
+                        <div class="progress custom-progress" style="margin-top: 3px">
+                            <div class="progress-bar progress-bar-success progress-bar-striped" role="progressbar"
+                                 style="width:{{ file.progress }}%">
+                            </div>
+                        </div>
+                    </td>
+                    <td style="width: 5%">
+                        <a href="" class = "file-status"  data-ng-click="removeFileFromQueue(file)"
+                           data-ng-if="file.status === 'progress' || file.status === 'queued' || file.status === 'done'"
+                                >
+                            <i class="fa fa-times" data-ng-if="!fileSaved" aria-hidden="true"></i>
+                            <i class="fa fa-check" data-ng-if="fileSaved" aria-hidden="true"></i>
+                        </a>
+                    </td>
+                    <td style="width: 5%"></td>
+                </tr>
+                </tbody>
+            </table>
+            </div>
+
+            <div class="upload-msg-wrap" ng-if="errorFiles.length">
+                <div class="custom-error">
+                    <p>
+                        There are some errors in selected file.
+                    </p>
+                </div>
+                <ul class="model-error-wrap file-upload">
+                    <li ng-repeat="file in errorFiles">
+                        <p>
+                            {{ file.name }} <br/> <span>{{ file.errorText }}</span>
+                            <!--<md-tooltip md-direction="bottom" md-hide="auto" md-delay="100">
+                                {{file.name}}
+                            </md-tooltip>-->
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div class="custom-error" data-ng-if="noFileSelected || isFileUploading">
+                <p>
+                    {{ infoMsg }}
+                </p>
+            </div>
+        </div>
+
+
+        <div class="col-xs-12" data-ng-if="uploadingFiles.length > 0 && !fileSaved">
+            <button class="btn btn-outline-primary" style="float:left; background: #C62828;color: white" data-ng-click="cancelCallback()">
+                CANCEL
+            </button>
+            <button class="btn btn-outline-primary" style="margin-left: 20px; background: #358887; color: white" data-ng-click="saveCallback()">
+                SAVE
+            </button>
+        </div>
+    </form>
+</div>
+

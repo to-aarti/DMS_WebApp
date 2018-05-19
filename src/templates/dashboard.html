@@ -1,0 +1,78 @@
+<div class="row" data-ng-controller="DashboardCtrl">
+	<div class="col-xs-12">
+		<uib-alert data-ng-repeat="alert in sharedVar.alerts" type="info" close="closeAlert($index)">{{alert.msg}}</uib-alert>
+	</div>
+
+	<div class="col-xs-12">
+		<div data-ng-if="isProcessing" style="text-align: center; margin-top: 80px;"> Loading ...</div>
+		<div data-ng-if="!isProcessing && allDocuments.length == 0" style="text-align: center; margin-top: 80px;"> Sorry! Currently No Document is available.</div>
+		<div class="panel panel-info" data-ng-if="openPanelForm">
+			<div class="panel-heading">
+				<span data-ng-if="!originalDoc.category">
+					Assign Category
+				</span>
+				<span data-ng-if="originalDoc.category">
+				Change Category
+				</span>
+			</div>
+			<div class="panel-body">
+				<form>
+					<div class="form-group">
+						<label for="exampleInputEmail1">File Name </label>
+						<input type="input" ng-required="true" data-ng-model="originalDoc.name" class="form-control"
+							   id="exampleInputEmail1"
+							   aria-describedby="emailHelp"
+							   disabled="true">
+					</div>
+					<div class="form-group">
+						<label for="exampleInputEmail1">Category</label>
+						<select class="form-control form-control-lg"  data-ng-required="true"
+								data-ng-model="selectedDoc.category">
+							<option value="" selected>Select Category</option>
+							<option data-ng-repeat="cat in categories" value="{{ cat.name }}">{{ cat.name }}</option>
+						</select>
+					</div>
+					<button type="button" class="btn btn-primary"
+							data-ng-click="cancel()">
+						Cancel
+					</button>
+					<button type="submit" class="btn btn-primary"
+							data-ng-click="updateDocument(originalDoc)">
+						Submit
+					</button>
+				</form>
+			</div>
+		</div>
+
+		<table class="table" data-ng-if="!isProcessing && allDocuments.length">
+			<thead>
+			<tr>
+				<th>File Name</th>
+				<th>Category</th>
+				<th>File Type</th>
+				<th>Size</th>
+				<th>Uploaded At</th>
+				<th>Actions</th>
+			</tr>
+			</thead>
+			<tbody >
+			<tr ng-repeat="doc in allDocuments">
+				<td style="width: 30%;">{{ doc.name }}</td>
+				<td>{{ doc.category }}</td>
+				<td>{{ doc.file_type }}</td>
+				<td>{{ doc.size }}</td>
+				<td>{{ doc.uploaded_at | formattedDateTime}}</td>
+				<td>
+					<span href="" data-toggle="tooltip" title="Change Category" ng-click="openPanel($index, doc)">
+                        <i class="fa fa-pencil" aria-hidden="true"></i>
+                    </span>
+					<a href="{{ doc.url }}" data-toggle="tooltip" title="Download" style="margin-left: 15px; cursor: hand"><i class="fa fa-download" aria-hidden="true"></i></a>
+					<span data-toggle="tooltip" title="Delete" ng-click="deleteDocument($index, doc.id)" style="margin-left: 15px; cursor: hand"><i class="fa fa-trash-o"
+																																					 aria-hidden="true"></i></span>
+				</td>
+			</tr>
+			</tbody>
+		</table>
+	</div>
+</div>
+
